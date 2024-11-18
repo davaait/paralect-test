@@ -1,6 +1,6 @@
 services:
   mongo:
-    container_name: js-vacancy-test-task-mongo
+    container_name: vacancies-monitoring-mongo
     image: mongo:6.0
     entrypoint:
       - bash
@@ -12,7 +12,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     ports:
       - 27017:27017
     volumes:
@@ -26,7 +26,7 @@ services:
         target: /data/configdb
   # mongo-replicator creates a replica set for transaction support
   mongo-replicator:
-    container_name: js-vacancy-test-task-mongo-replicator
+    container_name: vacancies-monitoring-mongo-replicator
     image: mongo:6.0
     entrypoint:
       - bash
@@ -45,20 +45,20 @@ services:
       - PASSWORD=root
       - REPLICA_SET_NAME=rs
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     depends_on:
       - mongo
   redis:
-    container_name: js-vacancy-test-task-redis
+    container_name: vacancies-monitoring-redis
     image: redis:5.0.5
     command: redis-server --appendonly yes
     hostname: redis
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     ports:
       - 6379:6379
   api:
-    container_name: js-vacancy-test-task-api
+    container_name: vacancies-monitoring-api
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
@@ -67,7 +67,7 @@ services:
         NODE_ENV: development
         APP_ENV: development
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     volumes:
       - ./apps/api/src:/app/apps/api/src
       - mailer-volume:/app/packages/mailer
@@ -77,7 +77,7 @@ services:
       - redis
       - mongo-replicator
   migrator:
-    container_name: js-vacancy-test-task-migrator
+    container_name: vacancies-monitoring-migrator
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile.migrator
@@ -86,13 +86,13 @@ services:
         NODE_ENV: development
         APP_ENV: development
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     volumes:
       - ./apps/api/src:/app/apps/api/src
     depends_on:
       - mongo-replicator
   scheduler:
-    container_name: js-vacancy-test-task-scheduler
+    container_name: vacancies-monitoring-scheduler
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile.scheduler
@@ -101,13 +101,13 @@ services:
         NODE_ENV: development
         APP_ENV: development
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     volumes:
       - ./apps/api/src:/app/apps/api/src
     depends_on:
       - mongo-replicator
   web:
-    container_name: js-vacancy-test-task-web
+    container_name: vacancies-monitoring-web
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile
@@ -119,11 +119,11 @@ services:
       - ./apps/web/src:/app/apps/web/src
       - ./apps/web/public:/app/apps/web/public
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     ports:
       - 3002:3002
   mailer:
-    container_name: js-vacancy-test-task-mailer
+    container_name: vacancies-monitoring-mailer
     build:
       context: .
       dockerfile: ./packages/mailer/Dockerfile
@@ -136,12 +136,12 @@ services:
       - ./packages/mailer/emails:/app/packages/mailer/emails
       - ./packages/mailer/src:/app/packages/mailer/src
     networks:
-      - js-vacancy-test-task
+      - vacancies-monitoring
     ports:
       - 3003:3003
 networks:
-  js-vacancy-test-task:
-    name: js-vacancy-test-task-network
+  vacancies-monitoring:
+    name: vacancies-monitoring-network
 
 volumes:
   mongodb:
