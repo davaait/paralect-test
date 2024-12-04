@@ -1,5 +1,5 @@
 import Router from '@koa/router';
-import { User } from 'app-types';
+import { Feedback, User } from 'app-types';
 import Koa, { Next, ParameterizedContext, Request } from 'koa';
 import { Template } from 'mailer';
 
@@ -7,6 +7,7 @@ export * from 'app-types';
 
 export type AppKoaContextState = {
   user: User;
+  feedback: Feedback;
   accessToken: string;
   isShadow: boolean | null;
 };

@@ -8,6 +8,6 @@ moduleAlias();
 
 import 'dotenv/config';
 
-import migrator from 'migrator/index';
+// import migrator from 'migrator/index';
 
-migrator.exec();
+// migrator.exec();

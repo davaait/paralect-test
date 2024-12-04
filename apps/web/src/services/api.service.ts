@@ -120,6 +120,6 @@ class ApiClient {
 
 export default new ApiClient({
   baseURL: config.API_URL,
-  withCredentials: true,
+  withCredentials: false,
   responseType: 'json',
 });
