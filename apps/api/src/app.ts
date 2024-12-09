@@ -32,7 +32,7 @@ const initKoa = () => {
 
   app.use(
     cors({
-      origin: 'https://vacancies-monitoring-web.onrender.com',
+      origin: ['http://localhost:3000','https://vacancies-monitoring-web.onrender.com'],
     }),
   );
   app.use(helmet());
