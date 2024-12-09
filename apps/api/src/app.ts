@@ -30,11 +30,7 @@ import { AppKoa } from 'types';
 const initKoa = () => {
   const app = new AppKoa();
 
-  app.use(
-    cors({
-      origin: ['http://localhost:3002','https://vacancies-monitoring-web.onrender.com'],
-    }),
-  );
+  app.use(cors({ credentials: true }));
   app.use(helmet());
   qs(app);
   app.use(bodyParser());
